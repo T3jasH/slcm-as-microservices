@@ -1,0 +1,29 @@
+# How to organize all services into microservices
+
+microservices:
+  - User:
+      db models: 
+        - user
+        - studentRollNo
+  - Course:
+      db models:
+        - stream
+        - department 
+        - course 
+        - class
+        - classToCourse
+  - Exams:
+    db models:
+      - exam 
+      - score
+      - coursePerformance 
+  - Attendance:
+    db models:  
+       - attendance
+  - Fees:
+    db models:
+      - fees 
+      - payment 
+  - Notifications:
+    db models:
+      - notifications

@@ -1,0 +1,38 @@
+// env:
+//     node: true
+// extends:
+//     - eslint:recommended
+//     - plugin:@typescript-eslint/recommended
+//     - prettier
+// parser: "@typescript-eslint/parser"
+// parserOptions:
+//     ecmaVersion: 9
+//     project: ./tsconfig.json
+//     tsconfigRootDir: ./user
+// rules:
+//     semi: 0
+//     typescript-eslint/no-explicit-any: 0
+// plugins:
+//     - "@typescript-eslint"
+
+{
+    "env": {
+        "node": true
+    },
+    "extends": [
+        "eslint:recommend",
+        "plugin:@typescript-eslint/recommended",
+        "prettier"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": 9,
+        "project": "./tsconfig.json",
+        "tsconfigRootDir": "./course"
+    },
+    "rules": {
+        "semi": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-non-null-assertion": "off"
+    }
+}

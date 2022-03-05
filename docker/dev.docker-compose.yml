@@ -1,0 +1,47 @@
+version: '3.3'
+
+services:
+  user:
+      build:
+        context: .
+        dockerfile: ./dev.dockerfile
+      container_name: user 
+      restart: unless-stopped
+      volumes: 
+        - ../user:/usr/src/app
+      expose: 
+        - 5000
+      ports: 
+        - 5000:5000
+      depends_on:
+        - cache
+        - userdb
+  userdb:
+    image: mongo:latest
+    container_name: userdb
+    volumes:
+      - ../data:/data/db
+    logging:
+      driver: none
+  cache: 
+    image: redis:6.2
+    container_name: usercache
+    logging: 
+      driver: none
+  course:
+    build:
+      context: .
+      dockerfile: ./dev.dockerfile
+    container_name: course
+    restart: unless-stopped
+    volumes: 
+      - ../course:/usr/src/app
+    expose: 
+        - 5000
+  coursedb:
+    image: mongo:latest
+    container_name: coursedb
+    volumes:
+      - ../data/course_data:/data/db
+    logging:
+      driver: none

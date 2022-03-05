@@ -1,0 +1,73 @@
+# List of all top level services(functionalities) that are needed
+services:
+  - For student:
+    - GET myCourses:
+        parameters:
+          - studentId
+          - semester
+        returns:
+          - subjects(name, type, credits, code)
+          - section corresponding to each subject
+          - rollNo in each section
+    - GET myInternals:
+        parameters:
+          - studentId
+          - semester 
+        returns:
+          - subjects 
+          - exam types done so far
+          - marks obtained and max marks
+    - GET grades:
+        parameters:
+          - studentId
+          - semester
+        returns:
+          - subjects
+          - gpa per subject
+          - credits
+          - cgpa 
+    - GET attendance:
+        parameters:
+          - studentId
+          - semester
+        returns:
+          - subjects
+          - total classes, attended, absent per subject
+    - GET feesDetails:
+        parameters:
+          - studentId
+          - semester
+        description:
+          - Each odd semster corresponds to fees payment for that year. This can easily be extended to semester wise payment too
+        returns:
+          - fees paid, pending
+  - For professors:
+    - GET myCourses:
+        parameters:
+          - profId
+          - year
+          - semester
+        returns:
+          - courses corresponding to given semester and year
+          - section alloted to each course 
+    - GET internalsByClass:
+        parameters:
+          - profId
+          - classId
+        returns:
+          - internal scores of all students in that class and prof's course
+    - PATCH / POST marks by studentId:
+        parameters:
+          - studentId
+          - classId
+          - courseId
+    - POST bulkUpdateInternalMarks:
+        parameters:
+          - studentId
+          - classId
+          - courseId
+          - exam type
+          - attempt
+          - marks obtained
+        description:
+        - Submit data through csv file

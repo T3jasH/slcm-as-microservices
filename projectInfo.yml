@@ -1,0 +1,18 @@
+### Implementation info by microservice
+
+microservices:
+  - course:
+      features: 
+        alloting courses to profs: 
+          Each prof gets to apply for courses (they want to teach) next sem. 
+          So services to assign courses to a userId (of faculty) by semester and year
+          (This can later be updated by admin(hod maybe))
+        generating classes(sections) by stream:
+          Submit number of sections required per stream and batch and classes get created
+          Profs get assigned according to course requirement
+          Students get assigned classes 
+
+TODO:
+  - Security - tls or jwt
+  - Extra role for HOD?
+  - Repeat classes: Create a separate model with reference to existing class 

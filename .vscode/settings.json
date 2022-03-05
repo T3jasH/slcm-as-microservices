@@ -1,0 +1,12 @@
+{
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "editor.formatOnSave": true,
+    "yaml.schemas": {
+        "https://json.schemastore.org/github-workflow.json": "file:///home/tejas/Desktop/prodevans/pd-main-website/.github/workflows/deploy.yml"
+    },
+    "terminal.integrated.persistentSessionReviveProcess": "never",
+    "terminal.integrated.enablePersistentSessions": false
+}
