@@ -44,16 +44,18 @@ export default class ClassRepo {
     deleteClassesByStreamBatch = async (streamId: string, batch: number) => {
         await Class.deleteMany({ stream: streamId, batch })
     }
-    getClassesByStreamBatchSem = async (
+    getClassByStudent = async (
         streamId: string,
         batch: number,
-        semester: number
+        currSem: number,
+        userId: string
     ) => {
-        return await Class.find({
+        return await Class.findOne({
             stream: streamId,
             batch: batch,
-            semesters: { $elemMatch: semester },
-        })
+            semesters: { $elemMatch: currSem },
+            students: { $elemMatch: userId },
+        }).select("-students")
     }
     getAllClasses = async () => {
         return await Class.find({})
@@ -64,8 +66,16 @@ export default class ClassRepo {
             { $addToSet: { students: { $each: students } } }
         )
     }
-    getStudentsByStreamBatch = async (batch: number, stream: string) => {
-        return await Class.find({ batch, stream })
+    getClassesByStreamBatchSem = async (
+        batch: number,
+        stream: string,
+        semesters: number
+    ) => {
+        return await Class.find({
+            batch,
+            stream,
+            semesters: { $in: semesters },
+        })
     }
     removeStudentsFromClassByStreamBatch = async (
         batch: number,

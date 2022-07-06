@@ -150,4 +150,80 @@ export default class Class extends Common {
             throw err
         }
     }
+    allotToStudents = async (
+        students: string[],
+        streamId: string,
+        batch: number,
+        currSem: number
+    ) => {
+        const { status, body } = await request(this.app)
+            .post("/classes/streams/students-allot")
+            .send({ students, streamId, batch, currSem })
+        try {
+            expect(status).toBe(200)
+            const { data } = body
+            expect(data.length).toBeDefined()
+            return data
+        } catch (err) {
+            console.log(body)
+            throw err
+        }
+    }
+    getStudentsAllotment = async (
+        streamId: string,
+        batch: number,
+        semesters: number[]
+    ) => {
+        const { status, body } = await request(this.app)
+            .post("/classes/streams/students")
+            .send({ streamId, batch, semesters })
+        try {
+            expect(status).toBe(200)
+            const { data } = body
+            expect(data.length).toBeDefined()
+            return data
+        } catch (err) {
+            console.log(body)
+        }
+    }
+    getClassByStudents = async (
+        data: {
+            streamId: string
+            userId: string
+            batch: number
+            currSem: number
+        }[]
+    ) => {
+        return Promise.all(
+            data.map(async ({ streamId, userId, batch, currSem }) => {
+                const { status, body } = await request(this.app)
+                    .post(`/classes/streams/students/${userId}`)
+                    .send({ streamId, batch, currSem })
+                try {
+                    expect(status).toBe(200)
+                    const { data } = body
+                    expect(data.section).toBeDefined()
+                    return data
+                } catch (err) {
+                    console.log(body)
+                    throw err
+                }
+            })
+        )
+    }
+    deleteStudentsAllotment = async (data: {
+        streamId: string
+        batch: number
+    }) => {
+        const { status, body } = await request(this.app)
+            .delete("/classes/streams/students-allot")
+            .send(data)
+        try {
+            expect(status).toBe(200)
+            return data
+        } catch (err) {
+            console.log(body)
+            throw err
+        }
+    }
 }

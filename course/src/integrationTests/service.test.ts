@@ -3,7 +3,13 @@ import Courses from "./courses"
 import Departments from "./departments"
 import Streams from "./streams"
 import Class from "./class"
-import { courses, department, streams, userToCourses } from "../mockData"
+import {
+    courses,
+    department,
+    streams,
+    students,
+    userToCourses,
+} from "../mockData"
 import { Types } from "mongoose"
 import { CourseModel } from "../models/Course"
 
@@ -128,6 +134,25 @@ describe("Test the course microservice", () => {
         })
     })
 
+    it("Allots classes to students", async () => {
+        const str = await stream.getAllStreams()
+        const allotment = await classes.allotToStudents(
+            students,
+            str[0]._id,
+            2021,
+            3
+        )
+        const allotmentByStudents = await classes.getClassByStudents(
+            students.slice(0, 10).map((student) => ({
+                streamId: str[0]._id,
+                userId: student,
+                batch: 2020,
+                currSem: 3,
+            }))
+        )
+        console.log(allotmentByStudents)
+    })
+
     afterAll(async () => {
         try {
             const str = await stream.getAllStreams()
@@ -137,6 +162,10 @@ describe("Test the course microservice", () => {
                 semester: userToCourses[0].semester,
             }
             await classes.deleteProfsAllotment(data)
+            // await classes.deleteStudentsAllotment({
+            //     streamId: data.streamId,
+            //     batch: 2020,
+            // })
             // updating to empty array, thereby deleting course preferences
             await course.updateCoursePreferences(
                 userToCourses.map((user) => ({

@@ -258,8 +258,8 @@ export default class ClassService {
         currSem: number
     ) => {
         const classes = await this.classRepo.getClassesByStreamBatchSem(
-            streamId,
             batch,
+            streamId,
             currSem
         )
         const numberOfClasses = classes.length
@@ -307,8 +307,36 @@ export default class ClassService {
         )
         return classToStudents
     }
-    getStudentClassAllotment = async (streamId: string, batch: number) => {
-        return await this.classRepo.getStudentsByStreamBatch(batch, streamId)
+    /**
+     * Get allotment by prof or admin
+     */
+    getStudentsClassAllotment = async (
+        streamId: string,
+        batch: number,
+        semesters: number
+    ) => {
+        return await this.classRepo.getClassesByStreamBatchSem(
+            batch,
+            streamId,
+            semesters
+        )
+    }
+
+    /**
+     * Get allotment by student. (To see which section student has been allotted)
+     */
+    getClassByStudent = async (
+        streamId: string,
+        batch: number,
+        currSem: number,
+        userId: string
+    ) => {
+        return await this.classRepo.getClassByStudent(
+            streamId,
+            batch,
+            currSem,
+            userId
+        )
     }
     resetStudentClassAlltomentByStream = async (
         streamId: string,

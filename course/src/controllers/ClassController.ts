@@ -77,16 +77,16 @@ export default class ClassController {
             "/streams/students-allot",
             this.classValidator.allotClassesToStudents,
             (req: Request, res: Response, next: NextFunction) => {
-                const { users, streamId, batch, currSem } = req.body
+                const { students, streamId, batch, currSem } = req.body
                 this.classService
                     .allotClassesToStudentsByStream(
-                        users,
+                        students,
                         streamId,
                         batch,
                         currSem
                     )
                     .then((data) =>
-                        res.status(201).json({
+                        res.status(200).json({
                             success: true,
                             data,
                         })
@@ -98,9 +98,9 @@ export default class ClassController {
             "/streams/students",
             this.classValidator.studentClassAllotment,
             (req: Request, res: Response, next: NextFunction) => {
-                const { streamId, batch } = req.body
+                const { streamId, batch, semesters } = req.body
                 this.classService
-                    .getStudentClassAllotment(streamId, batch)
+                    .getStudentsClassAllotment(streamId, batch, semesters)
                     .then((data) =>
                         res.status(200).json({
                             success: true,
@@ -111,7 +111,7 @@ export default class ClassController {
             }
         )
         this.router.delete(
-            "/streams/students",
+            "/streams/students-allot",
             this.classValidator.studentClassAllotment,
             (req: Request, res: Response, next: NextFunction) => {
                 const { streamId, batch } = req.body
@@ -135,6 +135,20 @@ export default class ClassController {
                 const { year, semester } = req.body
                 this.classService
                     .getProfToClassAllotmentByUser(year, semester, id)
+                    .then((data) =>
+                        res.status(200).json({ data, success: true })
+                    )
+                    .catch((err) => next(err))
+            }
+        )
+        this.router.post(
+            "/streans/student-allot/:id",
+            this.classValidator.classAllotmentByStudent,
+            (req: Request, res: Response, next: NextFunction) => {
+                const { id } = req.params
+                const { streamId, batch, currSem } = req.body
+                this.classService
+                    .getClassByStudent(streamId, batch, currSem, id)
                     .then((data) =>
                         res.status(200).json({ data, success: true })
                     )

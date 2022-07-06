@@ -83,7 +83,7 @@ export default class ClassValidator extends Validator {
     ) => {
         const schema = Joi.object({
             students: Joi.array()
-                .items(Joi.string().length(24))
+                .items(Joi.string().custom(this.mongooseIDValidator))
                 .min(1)
                 .required(),
             streamId: Joi.string().custom(this.mongooseIDValidator).required(),
@@ -105,9 +105,31 @@ export default class ClassValidator extends Validator {
         const schema = Joi.object({
             streamId: Joi.string().custom(this.mongooseIDValidator).required(),
             batch: Joi.number().required(),
+            semesters: Joi.array().items(Joi.number()).min(1).required(),
         })
         try {
             this.validate(schema, req.body)
+            next()
+        } catch (err) {
+            next(err)
+        }
+    }
+    classAllotmentByStudent = (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) => {
+        const paramSchema = Joi.object({
+            id: Joi.string().custom(this.mongooseIDValidator).required(),
+        })
+        const bodySchema = Joi.object({
+            streamId: Joi.string().custom(this.mongooseIDValidator).required(),
+            currSem: Joi.number().required(),
+            batch: Joi.number().required(),
+        })
+        try {
+            this.validate(paramSchema, req.body)
+            this.validate(bodySchema, req.body)
             next()
         } catch (err) {
             next(err)
